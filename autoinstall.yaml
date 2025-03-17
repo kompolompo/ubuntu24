@@ -1,0 +1,28 @@
+autoinstall:
+  version: 1
+  identity:
+    hostname: fnits-test
+    username: fnits
+    password: $y$j9T$1VhqS3SUTG.HoMbDKeKhr.$ffsH0TtdDTws9oTTQGrULNc3LFfL8qsRzE8c3AegQz6
+    realname: fnitsson
+  ssh:
+    install-server: true
+    allow-pw: true
+  storage:
+    layout:
+      name: direct
+  locale: en_US.UTF-8
+  keyboard:
+    layout: us
+  packages:
+    - net-tools
+    - htop
+    - curl
+  network:
+    version: 2
+    ethernets:
+      all-eth:
+        match:
+          name: "*"
+        dhcp4: true
+  updates: security
