@@ -10,10 +10,10 @@ autoinstall:
     allow-pw: true
   storage:
     layout:
-      name: direct
+      name: lvm
   locale: en_US.UTF-8
   keyboard:
-    layout: us
+    layout: se
   packages:
     - net-tools
     - htop
@@ -26,3 +26,5 @@ autoinstall:
           name: "*"
         dhcp4: true
   updates: security
+  late-commands:
+    - curtin in-target -- apt update
