@@ -26,3 +26,115 @@ autoinstall:
           name: "*"
         dhcp4: true
   updates: security
+###NEW
+# autoinstall.yaml
+
+# General settings
+reporting:
+ send-anonymized-cpi: false
+ send-installog: true
+
+# User data
+user-data:
+ username: fnits
+ password: $y$j9T$1VhqS3SUTG.HoMbDKeKhr.$ffsH0TtdDTws9oTTQGrULNc3LFfL8qsRzE8c3AegQz6
+ users:
+    - name: "fnits"
+      groups: [sudo]
+      shell: /bin/bash
+      lock-passwd: false
+      sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+
+# Network configuration
+network-config:
+ version: 2
+ ethernets:
+    ens3:
+      dhcp4: true
+ vlans:
+    ens3.100:
+      id: 100
+      interfaces:
+        - ens3
+
+# Storage configuration
+storage-config:
+ disk_config: lvm
+
+# Partition layout
+partitions:
+ - device: /dev/sda
+    size: 10GB
+    table_type: gpt
+    number: 1
+    mountpoint: /
+    wipe: full
+    boot-loader:
+      installed: true
+      label: UEFI
+      timeout: 5
+      efi:
+        partition: /dev/sda1
+        file_system_type: vfat
+        mount_point: /boot/efi
+    partitions:
+      - device: /dev/sda1
+        size: 512MB
+        mountpoint: /boot/efi
+        file_system_type: vfat
+        wipe: full
+      - device: /dev/sda2
+        size: 8GB
+        mountpoint: /boot
+        file_system_type: ext4
+        wipe: full
+      - device: /dev/sda3
+        size: 50GB
+        mountpoint: /
+        file_system_type: ext4
+        wipe: full
+      - device: /dev/sda4
+        size: 32GB
+        mountpoint: /home
+        file_system_type: ext4
+        wipe: full
+      - device: /dev/sda5
+        size: 10GB
+        mountpoint: /var/log
+        file_system_type: ext4
+        wipe: full
+
+# LVM configuration
+lvm:
+ - name: ubuntu-root
+    size: 50GB
+    vg_name: ubuntu-vg
+    lv_name: root
+    mountpoint: /
+    file_system_type: ext4
+ - name: ubuntu-home
+    size: 32GB
+    vg_name: ubuntu-vg
+    lv_name: home
+    mountpoint: /home
+    file_system_type: ext4
+ - name: ubuntu-var-log
+    size: 10GB
+    vg_name: ubuntu-vg
+    lv_name: var_log
+    mountpoint: /var/log
+    file_system_type: ext4
+
+# LUKS encryption
+luks:
+ - device: /dev/sda6
+    password: $y$j9T$1VhqS3SUTG.HoMbDKeKhr.$ffsH0TtdDTws9oTTQGrULNc3LFfL8qsRzE8c3AegQz6
+#    keyfile: /path/to/keyfile
+    keyfile-size: 512
+    keyfile-offset: 0
+    label: luks-ubuntu-root
+
+# TPM configuration
+tpm:
+ tpm2: true
+ tpm2-pcrs: [0, 7]
