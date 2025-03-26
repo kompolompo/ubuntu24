@@ -18,13 +18,14 @@ autoinstall:
     - net-tools
     - htop
     - curl
-  network:
-    version: 2
-    ethernets:
-      all-eth:
-        match:
-          name: "*"
-        dhcp4: true
+#  network:
+#    version: 2
+#    ethernets:
+#      all-eth:
+#        match:
+#          name: "*"
+#        dhcp4: true
   updates: security
   late-commands:
     - curtin in-target -- apt update
+    
